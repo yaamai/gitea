@@ -51,13 +51,17 @@ steps:
 #    event: [ push, tag ]
 
 - name: docker
-  image: plugins/docker:17.12
-  secrets: [ docker_username, docker_password ]
-  pull: true
-  repo: yaamai/gitea
-  cache_from: yaamai/gitea
-  auto_tag: true
-#  default_tags: true
-  when:
-    event: [ push, tag ]
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    pull: true
+    repo: yaamai/gitea
+    cache_from: yaamai/gitea
+    auto_tag: true
+  #  default_tags: true
+    when:
+      event: [ push, tag ]
 
