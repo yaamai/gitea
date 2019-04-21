@@ -78,33 +78,33 @@ workspace:
   path: src/code.gitea.io/gitea
 
 steps:
-- name: pre-build
-  image: webhippie/nodejs:latest
-  pull: true
-  commands:
-    - npm install
-    - make stylesheets-check
-  when:
-    event: [ push, tag, pull_request ]
-
-- name: build
-  image: golang:1.12
-  pull: true
-  environment:
-    TAGS: bindata sqlite sqlite_unlock_notify
-  commands:
-    - make clean
-    - make generate
-    - make vet
-    - make lint
-    - make fmt-check
-    - make swagger-check
-    - make swagger-validate
-    - make misspell-check
-    - make test-vendor
-    - make build
-  when:
-    event: [ push, tag, pull_request ]
+#- name: pre-build
+#  image: webhippie/nodejs:latest
+#  pull: true
+#  commands:
+#    - npm install
+#    - make stylesheets-check
+#  when:
+#    event: [ push, tag, pull_request ]
+#
+#- name: build
+#  image: golang:1.12
+#  pull: true
+#  environment:
+#    TAGS: bindata sqlite sqlite_unlock_notify
+#  commands:
+#    - make clean
+#    - make generate
+#    - make vet
+#    - make lint
+#    - make fmt-check
+#    - make swagger-check
+#    - make swagger-validate
+#    - make misspell-check
+#    - make test-vendor
+#    - make build
+#  when:
+#    event: [ push, tag, pull_request ]
 
 #- name: static
 #  image: techknowlogick/xgo:latest
