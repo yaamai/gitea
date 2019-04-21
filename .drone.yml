@@ -61,6 +61,7 @@ steps:
     repo: yaamai/gitea
     cache_from: yaamai/gitea
     auto_tag: true
+    auto_tag_suffix: amd64
   #  default_tags: true
     when:
       event: [ push, tag ]
@@ -128,6 +129,7 @@ steps:
     repo: yaamai/gitea
     cache_from: yaamai/gitea
     auto_tag: true
+    auto_tag_suffix: arm64
   #  default_tags: true
     when:
       event: [ push, tag ]
@@ -140,7 +142,7 @@ steps:
     password:
       from_secret: docker_password
     target: yaamai/gitea:latest
-    template: yaamai/gitea:latest-OS-ARCH
+    template: yaamai/gitea:latest-ARCH
     platforms:
       - linux/amd64
       - linux/arm64
