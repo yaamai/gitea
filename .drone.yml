@@ -132,3 +132,15 @@ steps:
     when:
       event: [ push, tag ]
 
+- name: manifest
+  image: plugins/manifest
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    target: yaamai/gitea:latest
+    template: yaamai/gitea:latest-OS-ARCH
+    platforms:
+      - linux/amd64
+      - linux/arm64
