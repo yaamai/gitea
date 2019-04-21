@@ -39,16 +39,16 @@ steps:
   when:
     event: [ push, tag, pull_request ]
 
-- name: static
-  image: techknowlogick/xgo:latest
-  pull: true
-  environment:
-    TAGS: bindata sqlite sqlite_unlock_notify
-  commands:
-    - export PATH=$PATH:$GOPATH/bin
-    - make release
-  when:
-    event: [ push, tag ]
+#- name: static
+#  image: techknowlogick/xgo:latest
+#  pull: true
+#  environment:
+#    TAGS: bindata sqlite sqlite_unlock_notify
+#  commands:
+#    - export PATH=$PATH:$GOPATH/bin
+#    - make release
+#  when:
+#    event: [ push, tag ]
 
 - name: docker
   image: plugins/docker:17.12
@@ -56,7 +56,8 @@ steps:
   pull: true
   repo: yaamai/gitea
   cache_from: yaamai/gitea
-  default_tags: true
+  auto_tag: true
+#  default_tags: true
   when:
     event: [ push, tag ]
 
