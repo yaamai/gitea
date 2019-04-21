@@ -65,3 +65,70 @@ steps:
     when:
       event: [ push, tag ]
 
+---
+kind: pipeline
+name: arm64
+
+platform:
+  os: linux
+  arch: arm64
+
+workspace:
+  base: /go
+  path: src/code.gitea.io/gitea
+
+steps:
+- name: pre-build
+  image: webhippie/nodejs:latest
+  pull: true
+  commands:
+    - npm install
+    - make stylesheets-check
+  when:
+    event: [ push, tag, pull_request ]
+
+- name: build
+  image: golang:1.12
+  pull: true
+  environment:
+    TAGS: bindata sqlite sqlite_unlock_notify
+  commands:
+    - make clean
+    - make generate
+    - make vet
+    - make lint
+    - make fmt-check
+    - make swagger-check
+    - make swagger-validate
+    - make misspell-check
+    - make test-vendor
+    - make build
+  when:
+    event: [ push, tag, pull_request ]
+
+#- name: static
+#  image: techknowlogick/xgo:latest
+#  pull: true
+#  environment:
+#    TAGS: bindata sqlite sqlite_unlock_notify
+#  commands:
+#    - export PATH=$PATH:$GOPATH/bin
+#    - make release
+#  when:
+#    event: [ push, tag ]
+
+- name: docker
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    pull: true
+    repo: yaamai/gitea
+    cache_from: yaamai/gitea
+    auto_tag: true
+  #  default_tags: true
+    when:
+      event: [ push, tag ]
+
